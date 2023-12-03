@@ -3,11 +3,12 @@ import {
     ThunkAction,
     configureStore,
 } from '@reduxjs/toolkit';
-import { fetchNotesReducer } from '../notes/notesSlice';
+import { createNotesReducer, fetchNotesReducer } from '../notes/notesSlice';
 
 const store = configureStore({
     reducer: {
-        "notes/fetch": fetchNotesReducer
+        "notes/fetch": fetchNotesReducer,
+        "notes/create": createNotesReducer,
     }
 });
 

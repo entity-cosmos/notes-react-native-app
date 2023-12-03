@@ -3,12 +3,13 @@ import { useFetchNotes } from "../modules/notes/notesHooks";
 import { ScrollView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Text, Button } from "react-native";
-import { Plus } from "react-feather";
-import { TouchableOpacity } from "react-native";
 import { Divider, IconButton } from "react-native-paper";
+import HomeCard from "./home/homeCard";
+import CreateNotes from "./home/createNotes";
 
-const Home = () =>{
+const Home = () => {
     const { loading, data, fetchNotes } = useFetchNotes();
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         fetchNotes();
@@ -31,7 +32,7 @@ const Home = () =>{
                             fontWeight: 'bold'
                         }}
                     >
-                    Notes
+                        Notes
                     </Text>
                 </View>
                 <View
@@ -40,37 +41,51 @@ const Home = () =>{
                         alignItems: 'center'
                     }}
                 >
-                <IconButton
-                    icon='plus'
-                    size={30}
-                    iconColor="#000"
-                    mode="contained"
-                    style={{
-                        backgroundColor: '#F4F27E',
-                    }}
-                    onPress={() => alert('Pressed')}
-                />
+                    <IconButton
+                        icon='plus'
+                        size={30}
+                        iconColor="#000"
+                        mode="contained"
+                        style={{
+                            backgroundColor: '#F4F27E',
+                        }}
+                        onPress={() => { setModalVisible(true) }}
+                    />
                 </View>
             </View>
-                <Divider style={{
-                    marginTop: 10,
-                    marginLeft: 30,
-                    marginRight: 30,
-                    marginBottom: 20,
-                    //dark grey
-                    backgroundColor: '#A9A9A9',
-                }} />
-            <View>
-            {!loading && data && data.map((note, i) => (
-                <Text
-                    key={i}
-                >
-                    {note.title}
-                </Text>
-            ))}
+            <Divider style={{
+                marginTop: 10,
+                marginLeft: 30,
+                marginRight: 30,
+                marginBottom: 20,
+                backgroundColor: '#A9A9A9',
+            }} />
+            <View
+                style={{
+                    flexDirection: 'row',
+                    //i want only 2 cards in a row
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    paddingLeft: 30,
+                    paddingRight: 30,
+                }}
+            >
+                {!loading && data && data.map((note, i) => (
+                    <>
+                        <HomeCard key={i} notes={note} />
+                    </>
+                ))}
             </View>
             {loading && <Text>Loading...</Text>}
+            <CreateNotes
+                visibility={modalVisible}
+                hideModal={() => {
+                    setModalVisible(false)
+                    fetchNotes()
+                }} />
+
         </ScrollView>
+
     )
 }
 

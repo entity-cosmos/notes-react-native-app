@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetch } from "./notesAction";
+import { create, fetch } from "./notesAction";
 
 export const useFetchNotes = () => {
     const dispatch = useDispatch();
@@ -7,7 +7,7 @@ export const useFetchNotes = () => {
     const error = useSelector((state) => state["notes/fetch"].error);
     const data = useSelector((state) => state["notes/fetch"].data);
 
-    const fetchNotes = async() => {
+    const fetchNotes = async () => {
         await dispatch(fetch());
     }
 
@@ -16,5 +16,23 @@ export const useFetchNotes = () => {
         error,
         data,
         fetchNotes
+    }
+};
+
+export const useCreateNotes = () => {
+    const dispatch = useDispatch();
+    const loading = useSelector((state) => state["notes/create"].loading);
+    const error = useSelector((state) => state["notes/create"].error);
+    const data = useSelector((state) => state["notes/create"].data);
+
+    const createNotes = async (data) => {
+        await dispatch(create(data));
+    }
+
+    return {
+        loading,
+        error,
+        data,
+        createNotes
     }
 };
