@@ -65,24 +65,20 @@ const Home = () => {
                     flexDirection: 'row',
                     //i want only 2 cards in a row
                     flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                    paddingLeft: 30,
-                    paddingRight: 30,
+                    gap: 10,
+                    // justifyContent: 'space-between',
+                    marginLeft: 30,
+                    marginRight: 30,
                 }}
             >
                 {!loading && data && data.map((note, i) => (
-                    <>
                         <HomeCard key={i} notes={note} />
-                    </>
                 ))}
             </View>
             {loading && <Text>Loading...</Text>}
             <CreateNotes
                 visibility={modalVisible}
-                hideModal={() => {
-                    setModalVisible(false)
-                    fetchNotes()
-                }} />
+                hideModal={() => setModalVisible(false)} />
 
         </ScrollView>
 

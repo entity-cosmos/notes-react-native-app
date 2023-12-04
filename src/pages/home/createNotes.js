@@ -1,11 +1,11 @@
 import { Formik } from 'formik';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Divider, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { useCreateNotes } from '../../modules/notes/notesHooks';
+import { useCreateNotes, useFetchNotes } from '../../modules/notes/notesHooks';
 
 const CreateNotes = ({ visibility, hideModal }) => {
-    const { loading, error, createNotes } = useCreateNotes();
-
+    const { loading, error, data, createNotes } = useCreateNotes();
+    const { loading: loadingFetch, error: errorFetch, data: dataFetch, fetchNotes } = useFetchNotes();
     const containerStyle = {
         backgroundColor: 'white',
         padding: 30,
@@ -17,6 +17,14 @@ const CreateNotes = ({ visibility, hideModal }) => {
         title: '',
         content: '',
     }
+    useEffect(() => {
+        if (data) {
+            fetchNotes();
+            hideModal();
+        } else if (error) {
+            alert("Error in creating notes");
+        }
+    }, [data, error]);
 
     const notesCreate = (values) => {
         console.log("values", values);
@@ -25,7 +33,6 @@ const CreateNotes = ({ visibility, hideModal }) => {
             content: values.content,
         }
         createNotes(data);
-        hideModal();
     }
     return (
         <Portal>
@@ -66,8 +73,9 @@ const CreateNotes = ({ visibility, hideModal }) => {
                                 style={{
                                     marginBottom: 10,
                                     backgroundColor: '#fff',
-                                    color: '#F4F27E',
                                 }}
+                                activeOutlineColor='gray'
+                                textColor='#000'
                             />
                             <TextInput
                                 label="Content"
@@ -79,11 +87,14 @@ const CreateNotes = ({ visibility, hideModal }) => {
                                 style={{
                                     marginBottom: 10,
                                     backgroundColor: '#fff',
-                                    color: '#F4F27E',
+                                    height: 100,
                                 }}
+                                activeOutlineColor='gray'
+                                textColor='#000'
                             />
                             <Button
                                 mode="contained"
+                                loading={loading}
                                 style={{
                                     backgroundColor: '#F4F27E',
                                     marginTop: 10,

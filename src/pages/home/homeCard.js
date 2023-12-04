@@ -11,6 +11,7 @@ const HomeCard = ({ notes, i }) => {
         marginBottom: 20,
         backgroundColor: '#F4F27E',
         borderRadius: 10,
+        width: '48%',
       }}>
       <Text
         variant="titleMedium"
