@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useFetchNotes } from "../modules/notes/notesHooks";
 import { ScrollView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Text, Button } from "react-native";
+import { Text } from "react-native";
 import { Divider, IconButton } from "react-native-paper";
 import HomeCard from "./home/homeCard";
-import CreateNotes from "./home/createNotes";
+import CreateNotes from "./home/createEditNotes";
 
 const Home = () => {
     const { loading, data, fetchNotes } = useFetchNotes();
@@ -75,10 +75,13 @@ const Home = () => {
                         <HomeCard key={i} notes={note} />
                 ))}
             </View>
-            {loading && <Text>Loading...</Text>}
             <CreateNotes
                 visibility={modalVisible}
-                hideModal={() => setModalVisible(false)} />
+                hideModal={() => setModalVisible(false)} 
+                title={"Create Notes"}
+                mode={"Create"}
+                btnText={"Create"}
+                />
 
         </ScrollView>
 

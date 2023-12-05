@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { create, fetch } from "./notesAction"
+import { create, deleteNote, fetch, update } from "./notesAction"
 
 
 const fetchInitialState = {
@@ -9,6 +9,18 @@ const fetchInitialState = {
 }
 
 const createInitialState = {
+    loading: false,
+    error: null,
+    data: {}
+}
+
+const updateInitialState = {
+    loading: false,
+    error: null,
+    data: {}
+}
+
+const deleteInitialState = {
     loading: false,
     error: null,
     data: {}
@@ -54,5 +66,47 @@ export const createNotesSlice = createSlice({
     }
 })
 
+export const updateNotesSlice = createSlice({
+    name: 'notes/update',
+    initialState: updateInitialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(update.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(update.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(update.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            })
+    }
+})
+
+export const deleteNotesSlice = createSlice({
+    name: 'notes/delete',
+    initialState: deleteInitialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(deleteNote.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(deleteNote.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(deleteNote.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            })
+    }
+})
+
 export const fetchNotesReducer = fetchNotesSlice.reducer;
 export const createNotesReducer = createNotesSlice.reducer;
+export const updateNotesReducer = updateNotesSlice.reducer;
+export const deleteNotesReducer = deleteNotesSlice.reducer;

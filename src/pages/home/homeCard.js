@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import { Divider, Text } from 'react-native-paper'
+import CreateNotes from './createEditNotes';
 
 const HomeCard = ({ notes, i }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View
       key={i}
@@ -33,6 +36,14 @@ const HomeCard = ({ notes, i }) => {
         }}>
         {notes.content}
       </Text>
+      {/* <CreateNotes
+        visibility={modalVisible}
+        hideModal={() => setModalVisible(false)}
+        title="Edit Notes"
+        mode="Edit"
+        notesValue={notes}
+        btnText="Update"
+      /> */}
     </View>
 
   )

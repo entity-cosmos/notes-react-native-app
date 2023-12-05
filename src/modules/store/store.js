@@ -1,14 +1,21 @@
 import {
     Action,
-    ThunkAction,
-    configureStore,
+    ThunkAction, 
+    configureStore 
 } from '@reduxjs/toolkit';
-import { createNotesReducer, fetchNotesReducer } from '../notes/notesSlice';
+import { 
+    createNotesReducer, 
+    deleteNotesReducer, 
+    fetchNotesReducer, 
+    updateNotesReducer 
+} from '../notes/notesSlice';
 
 const store = configureStore({
     reducer: {
         "notes/fetch": fetchNotesReducer,
         "notes/create": createNotesReducer,
+        "notes/update": updateNotesReducer,
+        "notes/delete": deleteNotesReducer,
     }
 });
 

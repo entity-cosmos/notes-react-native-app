@@ -1,11 +1,13 @@
 import { Formik } from 'formik';
 import React, { useEffect } from 'react'
 import { Button, Divider, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { useCreateNotes, useFetchNotes } from '../../modules/notes/notesHooks';
+import { useCreateNotes, useFetchNotes, useUpdateNotes } from '../../modules/notes/notesHooks';
 
-const CreateNotes = ({ visibility, hideModal }) => {
+const CreateNotes = ({ visibility, hideModal, mode, notesValue, title, btnText }) => {
     const { loading, error, data, createNotes } = useCreateNotes();
     const { loading: loadingFetch, error: errorFetch, data: dataFetch, fetchNotes } = useFetchNotes();
+    const { loading: loadingUpdate, error: errorUpdate, data: dataUpdate, updateNotes } = useUpdateNotes();
+
     const containerStyle = {
         backgroundColor: 'white',
         padding: 30,
@@ -17,6 +19,14 @@ const CreateNotes = ({ visibility, hideModal }) => {
         title: '',
         content: '',
     }
+
+    if (notesValue) {
+        initialValues = {
+            title: notesValue.title,
+            content: notesValue.content,
+        }
+    } 
+    
     useEffect(() => {
         if (data) {
             fetchNotes();
@@ -26,13 +36,27 @@ const CreateNotes = ({ visibility, hideModal }) => {
         }
     }, [data, error]);
 
-    const notesCreate = (values) => {
+    useEffect(() => {
+        if (dataUpdate) {
+            fetchNotes();
+            hideModal();
+        } else if (errorUpdate) {
+            alert("Error in updating notes");
+        }
+    }, [dataUpdate, errorUpdate]);
+
+    const notesCreateOrUpdate = (values) => {
         console.log("values", values);
         const data = {
             title: values.title,
             content: values.content,
         }
-        createNotes(data);
+        if (mode === "Create") {
+            createNotes(data);
+        } else {
+            data.id = notesValue._id;
+            updateNotes(data);
+        }
     }
     return (
         <Portal>
@@ -43,7 +67,7 @@ const CreateNotes = ({ visibility, hideModal }) => {
                         color: '#000',
                     }}
                 >
-                    Create Notes
+                    {title}
                 </Text>
                 <Divider style={{
                     marginTop: 10,
@@ -53,7 +77,7 @@ const CreateNotes = ({ visibility, hideModal }) => {
                 {/* create a form which contains text input for title and content and a button */}
                 <Formik
                     initialValues={initialValues}
-                    onSubmit={(values) => notesCreate(values)}
+                    onSubmit={(values) => notesCreateOrUpdate(values)}
                 >
                     {({
                         handleChange,
@@ -94,14 +118,14 @@ const CreateNotes = ({ visibility, hideModal }) => {
                             />
                             <Button
                                 mode="contained"
-                                loading={loading}
+                                loading={mode === "Create" ? loading : loadingUpdate}
                                 style={{
                                     backgroundColor: '#F4F27E',
                                     marginTop: 10,
                                 }}
                                 onPress={handleSubmit}
                             >
-                                Create
+                                {btnText}
                             </Button>
                         </>
                     )}
