@@ -8,7 +8,7 @@ export const useFetchNotes = () => {
     const data = useSelector((state) => state["notes/fetch"].data);
 
     const fetchNotes = async () => {
-        await dispatch(fetch());
+        dispatch(fetch());
     }
 
     return {
@@ -26,7 +26,7 @@ export const useCreateNotes = () => {
     const data = useSelector((state) => state["notes/create"].data);
 
     const createNotes = async (data) => {
-        await dispatch(create(data));
+        dispatch(create(data));
     }
 
     return {
@@ -44,7 +44,7 @@ export const useUpdateNotes = () => {
     const data = useSelector((state) => state["notes/update"].data);
 
     const updateNotes = async (data) => {
-        await dispatch(update(data));
+        dispatch(update(data));
     }
 
     return {
@@ -62,7 +62,7 @@ export const useDeleteNotes = () => {
     const data = useSelector((state) => state["notes/delete"].data);
 
     const deleteNotes = async (data) => {
-        await dispatch(deleteNote(data));
+        dispatch(deleteNote(data));
     }
 
     return {

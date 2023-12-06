@@ -36,7 +36,7 @@ export class NotesService {
         try {
             const url = `${this.baseUrl}/update/${note.id}`;
             const header = getHeader();
-            const response = await axois.put(url, note, {
+            const response = await axois.patch(url, note, {
                 headers: header
             });
             return response.data;
@@ -47,7 +47,7 @@ export class NotesService {
 
     async deleteNotes(note) {
         try {
-            const url = `${this.baseUrl}/delete/${note.id}`;
+            const url = `${this.baseUrl}/delete/${note}`;
             const header = getHeader();
             const response = await axois.delete(url, {
                 headers: header
