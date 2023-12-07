@@ -3,7 +3,7 @@ import { useFetchNotes } from "../modules/notes/notesHooks";
 import { ScrollView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Text } from "react-native";
-import { Divider, IconButton } from "react-native-paper";
+import { ActivityIndicator, Divider, IconButton } from "react-native-paper";
 import HomeCard from "./home/homeCard";
 import CreateNotes from "./home/createEditNotes";
 
@@ -71,9 +71,11 @@ const Home = () => {
                     marginRight: 30,
                 }}
             >
-                {!loading && data && data.map((note, i) => (
-                        <HomeCard key={i} notes={note} />
+                {loading ? <ActivityIndicator style={{padding: 150, paddingTop: 280}} size={'large'} animating={loading} color='#F4F27E' /> : data && data.map((note, i) => (
+
+                    <HomeCard notes={note} key={i} />
                 ))}
+               
             </View>
             <CreateNotes
                 visibility={modalVisible}
